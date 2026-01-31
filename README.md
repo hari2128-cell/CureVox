@@ -211,18 +211,14 @@ CureVox is an AI-based health guidance system intended for informational and awa
 
 👤 Author
 
-Hari S,
-Department of Electronics Engineering,
-Madras Institute of Technology.
 
-Dharaneesh M,
-Department of Electronics Engineering,
-Madras Institute of Technology.
+Hari S, Dharaneesh M, Sarvesh K, Ajay V
 
-Sarvesh K,
-Department of Electronics Engineering,
-Madras Institute of Technology.
 
-Ajay V,
-Department of Electronics Engineering,
-Madras Institute of Technology.
+Department of Electronics Engineering
+
+
+Madras Institute of Technology
+
+
+Chennai, Tamil Nadu, India
