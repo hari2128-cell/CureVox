@@ -223,6 +223,6 @@ Sarvesh K,
 Department of Electronics Engineering,
 Madras Institute of Technology.
 
-Ajay V
-Department of Electronics Engineering
-Madras Institute of Technology
+Ajay V,
+Department of Electronics Engineering,
+Madras Institute of Technology.
