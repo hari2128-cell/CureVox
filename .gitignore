@@ -16,3 +16,7 @@ backend/node_modules/
 
 # Logs
 *.log
+# Secrets
+backend/firebase_admin.json
+*.json
+
