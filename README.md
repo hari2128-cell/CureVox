@@ -117,6 +117,7 @@ Internet connection for dependency installation
 
 
 Navigate to backend directory
+
 cd curevox-main/backend
 
 Step 1: Create Virtual Environment (Recommended)
@@ -135,6 +136,7 @@ Linux / macOS
 source venv/bin/activate
 
 Step 2: Install Dependencies
+
 pip install -r requirements.txt
 
 🔑 Environment Configuration
@@ -165,6 +167,7 @@ A safe template is provided:
 This file contains placeholder values only and is safe to share.
 
 ▶️ Running the Application
+
 
 Run the backend using:
 
