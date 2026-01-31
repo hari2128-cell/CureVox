@@ -1,6 +1,7 @@
 CureVox
 
 Multilingual AI-Based Health Guidance System
+
 📌 Project Overview
 
 CureVox is a secure, multilingual AI-based health guidance system designed to support early health awareness through non-invasive user inputs. The platform enables users to interact using text or voice, answer guided follow-up questions, and receive clear, ethical health guidance focused on awareness and prevention.
@@ -12,6 +13,7 @@ CureVox does not diagnose diseases and does not prescribe medicines. Instead, it
 Many people delay seeking medical help due to uncertainty, accessibility issues, or language barriers. Existing digital health tools are often diagnosis-focused, complex, or inaccessible to non-technical users.
 
 There is a need for a simple, multilingual, and ethical health guidance system that supports early understanding without replacing healthcare professionals.
+
 
 💡 Solution
 
@@ -28,6 +30,7 @@ Ethical conclusions focused on awareness and prevention
 Responsible escalation to nearby medical professionals when required
 
 The system acts as a pre-consultation health assistant, not a diagnostic tool.
+
 
 🔄 How CureVox Works
 
@@ -53,6 +56,7 @@ Nearby doctors are suggested if required
 
 A downloadable health summary report is generated
 
+
 🌍 Key Features
 
 Multilingual interaction
@@ -71,6 +75,7 @@ Privacy-first data handling
 
 Downloadable health summary report
 
+
 🛡️ Ethics & Safety
 
 CureVox strictly follows responsible healthcare principles:
@@ -85,6 +90,7 @@ CureVox strictly follows responsible healthcare principles:
 
 The platform is designed to support, not replace, medical professionals.
 
+
 🔐 Privacy & Data Handling
 
 Secure authentication
@@ -94,6 +100,7 @@ No permanent storage of audio or image data
 Sensitive credentials are excluded from the repository
 
 Configuration is handled through environment variables
+
 
 📁 Project Structure
 CureVox/
@@ -105,6 +112,7 @@ CureVox/
 ├── requirements.txt
 ├── .env.example
 ├── .gitignore
+
 
 ⚙️ Setup & Installation
 Prerequisites
@@ -121,6 +129,7 @@ Navigate to backend directory
 cd curevox-main/backend
 
 Step 1: Create Virtual Environment (Recommended)
+
 python -m venv venv
 
 
