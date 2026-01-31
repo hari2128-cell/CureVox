@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>CureVox — Sign Up</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="brand">CureVox</div>
+  <nav id="nav-links">
+    <a href="landing.html" id="nav-home">Home</a>
+    <a href="chat.html" id="nav-chat">AI Doctor</a>
+    <a href="dashboard.html" id="nav-dashboard">Dashboard</a>
+    <a href="about.html" id="nav-about">About</a>
+    <span id="auth-area"></span>
+  </nav>
+</header>
+
+<main class="hero-card" style="max-width:420px; margin:60px auto;">
+  <h2>Create your CureVox Account</h2>
+  <input id="signupName" class="input" type="text" placeholder="Full name" style="margin-bottom:12px;">
+  <input id="signupEmail" class="input" type="email" placeholder="Email address">
+  <button id="signupBtn" class="btn btn-primary" style="width:100%; margin-top:12px;">Create Account</button>
+
+  <p style="margin-top:12px; color:var(--muted)">
+    Already have an account? <a href="login.html" style="color:var(--accent);">Login</a>
+  </p>
+
+  <div id="signupMsg" style="margin-top:12px;color:var(--muted)"></div>
+</main>
+
+<script>
+(function(){
+  const authArea = document.getElementById("auth-area");
+  authArea.innerHTML = `<a href="login.html" class="btn auth-btn">Login</a>
+    <a href="signup.html" class="btn btn-outline auth-btn">Sign up</a>`;
+
+  document.getElementById("signupBtn").onclick = async () => {
+    const name = document.getElementById("signupName").value.trim();
+    const email = document.getElementById("signupEmail").value.trim();
+    const msg = document.getElementById("signupMsg");
+    if (!name || !email) { msg.textContent = "Please fill both fields."; msg.style.color = "salmon"; return; }
+    msg.textContent = "Creating account...";
+    const backend = "http://127.0.0.1:5001";
+    try {
+      const res = await fetch(backend + "/auth/demo_signup", {
+        method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({email})
+      });
+      const j = await res.json();
+      if (j.ok && j.payload && j.payload.token) {
+        localStorage.setItem("curevox_token", j.payload.token);
+        localStorage.setItem("curevox_name", name);
+        localStorage.setItem("curevox_email", email);
+        msg.style.color = "lightgreen"; msg.textContent = "Account created — redirecting...";
+        setTimeout(()=> window.location.href = "dashboard.html", 800);
+      } else {
+        msg.style.color = "salmon"; msg.textContent = j.message || "Signup failed";
+      }
+    } catch (e) {
+      msg.style.color = "salmon"; msg.textContent = "Unable to contact backend.";
+    }
+  };
+})();
+</script>
+<script src="main.js" defer></script>
+</html>

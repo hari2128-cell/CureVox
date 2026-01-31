@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CureVox AI - Reports | Enterprise Medical Diagnostics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* WORLD-CLASS ENTERPRISE UI - CSS ERRORS FIXED */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: white;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* BACKGROUND ANIMATION */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(74,222,128,0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(245,158,11,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(59,130,246,0.1) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-15px) rotate(0.5deg); }
+            66% { transform: translateY(-10px) rotate(-0.5deg); }
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 280px;
+            background: linear-gradient(180deg, #16213e 0%, #0f141f 100%);
+            z-index: 1000;
+            padding: 20px 0;
+            border-right: 2px solid #334155;
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-logo {
+            padding: 0 25px 30px;
+            text-align: center;
+            border-bottom: 1px solid #334155;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0 20px;
+        }
+        
+        .nav-item {
+            margin-bottom: 12px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 20px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: rgba(16, 185, 129, 0.25);
+            color: #10b981;
+            transform: translateX(8px);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            width: 24px;
+            flex-shrink: 0;
+        }
+
+        .main-container {
+            margin-left: 280px;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+        
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 30px 50px;
+            position: relative;
+        }
+
+        /* HEADER */
+        .header {
+            background: rgba(22, 33, 62, 0.95);
+            backdrop-filter: blur(30px);
+            padding: 25px 35px;
+            border-radius: 24px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 12px;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .profile-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+        
+        .profile-container:hover {
+            background: rgba(16,185,129,0.15);
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .user-info {
+            text-align: right;
+            min-width: 140px;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 16px;
+        }
+        
+        .user-role {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .header-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .header-btn:hover {
+            background: rgba(16,185,129,0.2);
+            transform: translateY(-2px);
+        }
+        
+        .new-analysis-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            box-shadow: 0 10px 30px rgba(102,126,234,0.4);
+        }
+        
+        .new-analysis-btn:hover {
+            box-shadow: 0 20px 40px rgba(102,126,234,0.5);
+        }
+        
+        .logout-btn {
+            background: rgba(239,68,68,0.2);
+            border-color: rgba(239,68,68,0.3);
+        }
+        
+        .logout-btn:hover {
+            background: #ef4444;
+        }
+
+        /* PAGE HEADER */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .reports-title {
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #10b981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-tab {
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(20px);
+        }
+        
+        .filter-tab.active {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 10px 30px rgba(16,185,129,0.4);
+            transform: translateY(-2px);
+        }
+        
+        .filter-tab:hover:not(.active) {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-1px);
+        }
+
+        /* STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 24px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.4s;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #059669, transparent);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 35px 70px rgba(0,0,0,0.4);
+        }
+        
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+        
+        .stat-card.audio .stat-icon { color: #10b981; }
+        .stat-card.image .stat-icon { color: #f59e0b; }
+        .stat-card.risk .stat-icon { color: #10b981; }
+        .stat-card.time .stat-icon { color: #667eea; }
+        
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 0.8rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            color: rgba(255,255,255,0.85);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* REPORTS GRID */
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        .report-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 28px;
+            overflow: hidden;
+            transition: all 0.4s;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+        
+        .report-card:hover {
+            transform: translateY(-16px);
+            box-shadow: 0 50px 100px rgba(0,0,0,0.5);
+        }
+        
+        .report-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #10b981, #059669, transparent, #059669, #10b981);
+        }
+        
+        .report-header {
+            padding: 3.5rem 2.5rem 1.5rem 2.5rem;  /* ↑ TOP SPACE FOR BADGE */
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .report-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+        
+        .report-type {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .report-card.audio .report-type { color: #10b981; }
+        .report-card.rash .report-type { color: #f59e0b; }
+        .report-card.dual .report-type { color: #3b82f6; }
+        
+        .report-date {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7);
+            font-weight: 500;
+            margin: 0.75rem 0 0 0;         /* ↓ PULLED DOWN */
+        }
+        
+        .report-risk {
+            position: absolute;
+            top: 0.75rem;              /* ↑ PULLED UP */
+            right: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            backdrop-filter: blur(20px);
+            z-index: 3;
+            white-space: nowrap;
+        }
+        
+        .risk-low {
+            background: rgba(16,185,129,0.2);
+            color: #10b981;
+            border: 1px solid rgba(16,185,129,0.4);
+        }
+        
+        .risk-medium {
+            background: rgba(245,158,11,0.2);
+            color: #f59e0b;
+            border: 1px solid rgba(245,158,11,0.4);
+        }
+        
+        .risk-high {
+            background: rgba(239,68,68,0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239,68,68,0.4);
+        }
+        
+        .report-content {
+            padding: 0 2.5rem 2.5rem 2.5rem;
+        }
+        
+        .report-insights {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.95);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+        
+        .report-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .metric-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.06);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+        
+        .metric-item:hover {
+            background: rgba(255,255,255,0.12);
+            transform: translateY(-4px);
+        }
+        
+        .metric-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .report-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            backdrop-filter: blur(20px);
+        }
+        
+        .btn-view {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 10px 30px rgba(102,126,234,0.4);
+        }
+        
+        .btn-download {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 10px 30px rgba(16,185,129,0.4);
+        }
+        
+        .btn-chat {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            box-shadow: 0 10px 30px rgba(59,130,246,0.4);
+        }
+        
+        .btn-share {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 8rem 2rem;
+        }
+        
+        .empty-icon {
+            font-size: 7rem;
+            color: rgba(255,255,255,0.2);
+            margin-bottom: 2.5rem;
+        }
+        
+        .empty-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .empty-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1200px) {
+            .main-container {
+                margin-left: 260px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            
+            .main-container {
+                margin-left: 0 !important;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .header {
+                padding: 20px 25px;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .user-section {
+                justify-content: center;
+                width: 100%;
+                margin-top: 10px;
+            }
+            
+            .filter-tabs {
+                justify-content: center;
+            }
+            
+            .reports-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .report-risk {
+                top: 1.5rem;
+                right: 1.5rem;
+                padding: 10px 16px;
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main {
+                padding: 25px 20px 40px;
+            }
+            
+            .reports-title {
+                font-size: 2.2rem;
+            }
+            
+            .report-metrics {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            
+            .report-header {
+                padding: 3rem 1.5rem 1rem 1.5rem;
+            }
+            
+            .report-risk {
+                top: 0.5rem;
+                right: 1.25rem;
+                padding: 8px 14px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+        <div class="nav-logo">
+            <div class="logo">
+                <i class="fas fa-stethoscope"></i> CureVox AI
+            </div>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="/home.html" class="nav-link"><i class="fas fa-home nav-icon"></i><span>Home</span></a></li>
+            <li class="nav-item"><a href="/reports.html" class="nav-link active"><i class="fas fa-file-medical nav-icon"></i><span>Reports</span></a></li>
+            <li class="nav-item"><a href="/dashboard.html" class="nav-link"><i class="fas fa-chart-line nav-icon"></i><span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="/about.html" class="nav-link"><i class="fas fa-info-circle nav-icon"></i><span>About</span></a></li>
+        </ul>
+    </nav>
+
+    <div class="main-container" id="mainContainer">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="header-left">
+                <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+                <div class="page-title">
+                    <i class="fas fa-file-medical-alt"></i> Medical Reports
+                </div>
+            </div>
+            <div class="user-section">
+                <div class="profile-container">
+                    <div class="user-avatar">DS</div>
+                    <div class="user-info">
+                        <div class="user-name">Dr. Sarah Smith</div>
+                        <div class="user-role">Senior Physician</div>
+                    </div>
+                </div>
+                <button class="header-btn new-analysis-btn" onclick="newAnalysis()">
+                    <i class="fas fa-plus"></i> New Analysis
+                </button>
+                <button class="header-btn logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <main class="main">
+            <!-- PAGE HEADER -->
+            <div class="page-header">
+                <h1 class="reports-title">Reports & Diagnostics History</h1>
+                <div class="filter-tabs">
+                    <div class="filter-tab active" data-filter="all"><i class="fas fa-list"></i> All <span class="filter-count">(12)</span></div>
+                    <div class="filter-tab" data-filter="audio"><i class="fas fa-microphone"></i> Audio <span class="filter-count">(8)</span></div>
+                    <div class="filter-tab" data-filter="rash"><i class="fas fa-image"></i> Rash <span class="filter-count">(4)</span></div>
+                    <div class="filter-tab" data-filter="low"><i class="fas fa-shield-alt"></i> Low Risk <span class="filter-count">(10)</span></div>
+                    <div class="filter-tab" data-filter="week"><i class="fas fa-calendar-week"></i> This Week <span class="filter-count">(3)</span></div>
+                </div>
+            </div>
+
+            <!-- STATS -->
+            <div class="stats-grid">
+                <div class="stat-card audio">
+                    <i class="fas fa-microphone stat-icon"></i>
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">Audio Analyses</div>
+                </div>
+                <div class="stat-card image">
+                    <i class="fas fa-image stat-icon"></i>
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Rash Analyses</div>
+                </div>
+                <div class="stat-card risk">
+                    <i class="fas fa-shield-alt stat-icon"></i>
+                    <div class="stat-number">10</div>
+                    <div class="stat-label">Low Risk Cases</div>
+                </div>
+                <div class="stat-card time">
+                    <i class="fas fa-clock stat-icon"></i>
+                    <div class="stat-number">1.8s</div>
+                    <div class="stat-label">Avg Analysis Time</div>
+                </div>
+            </div>
+
+            <!-- REPORTS GRID -->
+            <div class="reports-grid" id="reportsGrid">
+                <!-- Reports populated by JavaScript -->
+            </div>
+
+            <!-- EMPTY STATE -->
+            <div class="empty-state" id="emptyState" style="display:none">
+                <div class="empty-icon">
+                    <i class="fas fa-file-medical"></i>
+                </div>
+                <h2 class="empty-title">No Reports Yet</h2>
+                <p class="empty-subtitle">Your diagnostic reports will appear here once you complete audio or rash analyses. Start your first analysis to generate clinical-grade reports.</p>
+                <button class="new-analysis-btn" style="font-size:1.2rem;padding:1rem 2.5rem" onclick="newAnalysis()">
+                    <i class="fas fa-plus"></i> Start First Analysis
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // REPORTS MANAGER
+        window.reportsManager = new (class {
+            constructor() {
+                this.reports = this.generateDemoReports();
+                this.currentFilter = 'all';
+                this.init();
+            }
+
+            init() {
+                this.renderStats();
+                this.renderReports();
+                this.bindEvents();
+                this.initMobileSidebar();
+            }
+
+            generateDemoReports() {
+                return [
+                    {
+                        id: 'AUDIO_1740123456',
+                        type: 'audio',
+                        risk: 'low',
+                        confidence: 0.947,
+                        date: 'Jan 24, 2026 6:53 PM',
+                        insights: 'Healthy respiratory patterns detected. Normal cough and breath analysis with no abnormalities.',
+                        metrics: { confidence: '94%', duration: '12.5s', mfcc: '-145' }
+                    },
+                    {
+                        id: 'RASH_1740121234',
+                        type: 'rash',
+                        risk: 'low',
+                        confidence: 0.88,
+                        date: 'Jan 23, 2026 3:45 PM',
+                        insights: 'Mild skin irritation detected. No serious conditions identified. Keep area clean and moisturized.',
+                        metrics: { confidence: '88%', redRatio: '0.32', resolution: '1920x1080' }
+                    },
+                    {
+                        id: 'DUAL_SEP_1740129999',
+                        type: 'dual',
+                        risk: 'low',
+                        confidence: 0.978,
+                        date: 'Jan 22, 2026 11:20 AM',
+                        insights: 'Dual audio analysis complete. Perfect cough and breath samples. No respiratory concerns detected.',
+                        metrics: { confidence: '97.8%', cough: '10s', breath: '10s' }
+                    }
+                ];
+            }
+
+            renderStats() {
+                const audioCount = this.reports.filter(r => r.type === 'audio' || r.type === 'dual').length;
+                const rashCount = this.reports.filter(r => r.type === 'rash').length;
+                const lowRisk = this.reports.filter(r => r.risk === 'low').length;
+
+                const stats = [
+                    '.stat-card.audio .stat-number',
+                    '.stat-card.image .stat-number', 
+                    '.stat-card.risk .stat-number',
+                    '.stat-card.time .stat-number'
+                ];
+                
+                const values = [audioCount, rashCount, lowRisk, '1.8s'];
+                
+                stats.forEach((selector, i) => {
+                    const el = document.querySelector(selector);
+                    if (el) el.textContent = values[i];
+                });
+            }
+
+            renderReports() {
+                const filteredReports = this.reports.filter(report => this.matchesFilter(report));
+                const grid = document.getElementById('reportsGrid');
+                const emptyState = document.getElementById('emptyState');
+
+                if (filteredReports.length === 0) {
+                    if (grid) grid.style.display = 'none';
+                    if (emptyState) emptyState.style.display = 'block';
+                } else {
+                    if (grid) {
+                        grid.style.display = 'grid';
+                        grid.innerHTML = filteredReports.map(report => this.createReportCard(report)).join('');
+                    }
+                    if (emptyState) emptyState.style.display = 'none';
+                }
+            }
+
+            matchesFilter(report) {
+                switch(this.currentFilter) {
+                    case 'all': return true;
+                    case 'audio': return ['audio', 'dual'].includes(report.type);
+                    case 'rash': return report.type === 'rash';
+                    case 'low': return report.risk === 'low';
+                    case 'week': return true; // Simplified for demo
+                    default: return false;
+                }
+            }
+
+            createReportCard(report) {
+                const typeClass = report.type === 'audio' ? 'audio' : report.type === 'rash' ? 'rash' : 'dual';
+                const riskClass = `risk-${report.risk}`;
+                const typeLabel = report.type === 'audio' ? 'Audio Analysis' : 
+                                report.type === 'rash' ? 'Rash Analysis' : 'Dual Audio Analysis';
+
+                const metricsHTML = Object.entries(report.metrics).map(([key, value]) => 
+                    `<div class="metric-item">
+                        <div class="metric-value">${value}</div>
+                        <div class="metric-label">${key.replace(/([A-Z])/g, ' $1').trim()}</div>
+                    </div>`
+                ).join('');
+
+                return `
+                    <div class="report-card ${typeClass}" onclick="reportsManager.viewReport('${report.id}')">
+                        <div class="report-header">
+                            <div class="report-header-top">
+                                <div class="report-type">${typeLabel}</div>
+                                <div class="report-date">${report.date}</div>
+                            </div>
+                            <div class="report-risk ${riskClass}">
+                                <i class="fas fa-shield-alt"></i> ${report.risk.toUpperCase()} RISK
+                            </div>
+                        </div>
+                        <div class="report-content">
+                            <div class="report-insights">${report.insights}</div>
+                            <div class="report-metrics">${metricsHTML}</div>
+                            <div class="report-actions">
+                                <button class="action-btn btn-view" onclick="event.stopPropagation(); reportsManager.viewReport('${report.id}');">
+                                    <i class="fas fa-eye"></i> View Details
+                                </button>
+                                <button class="action-btn btn-download" onclick="event.stopPropagation(); reportsManager.downloadReport('${report.id}');">
+                                    <i class="fas fa-download"></i> Download PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            bindEvents() {
+                document.querySelectorAll('.filter-tab').forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        this.currentFilter = tab.dataset.filter;
+                        this.renderReports();
+                    });
+                });
+            }
+
+            initMobileSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                const mobileBtn = document.getElementById('mobileMenuBtn');
+                if (mobileBtn && sidebar) {
+                    mobileBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        sidebar.classList.toggle('mobile-open');
+                    });
+                    document.addEventListener('click', (e) => {
+                        if (!sidebar.contains(e.target) && !mobileBtn.contains(e.target)) {
+                            sidebar.classList.remove('mobile-open');
+                        }
+                    });
+                }
+            }
+
+            viewReport(id) {
+                window.location.href = `analysis-report.html?analysis=${id}`;
+            }
+
+            downloadReport(id) {
+                alert('Download feature - connect to your FastAPI backend');
+            }
+
+            showNotification(message) {
+                alert(message);
+            }
+        })();
+
+        function newAnalysis() {
+            window.location.href = '/audio-analysis.html';
+        }
+
+        function logout() {
+            window.location.href = '/login.html';
+        }
+    </script>
+</body>
+</html>

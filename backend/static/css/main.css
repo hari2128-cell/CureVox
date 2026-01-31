@@ -1,0 +1,50 @@
+/* Global styles for all pages */
+:root {
+    --primary: #5a67d8;
+    --primary-dark: #4c51bf;
+    --secondary: #48bb78;
+    --danger: #f56565;
+    --warning: #ed8936;
+    --light: #f7fafc;
+    --dark: #2d3748;
+    --gray: #718096;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+    color: var(--dark);
+    background-color: var(--light);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Add more global styles as needed */

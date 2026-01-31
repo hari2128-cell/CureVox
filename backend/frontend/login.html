@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="CureVox - AI Health Diagnostics">
+    <meta name="theme-color" content="#5a67d8">
+    <title>CureVox - Phone Login</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
+    
+    <!-- Critical CSS (Inlined for performance) -->
+    <style>
+        /* Critical CSS - Loads immediately */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary: #5a67d8;
+            --primary-dark: #4c51bf;
+            --success: #48bb78;
+            --error: #f56565;
+            --warning: #ed8936;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1a202c 50%, #2d3748 100%);
+            --glass-bg: rgba(255, 255, 255, 0.98);
+            --border: rgba(255, 255, 255, 0.15);
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            min-height: 100vh;
+            background: var(--bg-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.2) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        .login-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: var(--shadow), 0 0 0 1px var(--border);
+            padding: clamp(36px, 4vw, 48px);
+            max-width: min(420px, 90vw);
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            border: 1px solid var(--border);
+            animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Loading skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+
+    <!-- Deferred non-critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    </noscript>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <!-- Non-critical CSS (loaded after page) -->
+    <style>
+        /* Rest of your CSS from before goes here - excluded for brevity */
+        /* Keep all your existing styles from the previous CSS block */
+        .logo-section { /* ... */ }
+        .progress-indicator { /* ... */ }
+        .form-section { /* ... */ }
+        .form-group { /* ... */ }
+        .form-input { /* ... */ }
+        .primary-btn { /* ... */ }
+        /* etc... */
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <!-- Header -->
+        <div class="logo-section">
+            <div class="logo">
+                <i class="fas fa-stethoscope"></i>
+            </div>
+            <h1>CureVox</h1>
+            <p class="logo-subtitle">AI Health Diagnostics</p>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-indicator">
+            <div class="progress-step active" id="step1"></div>
+            <span class="step-connector" id="connector1"></span>
+            <div class="progress-step" id="step2"></div>
+            <span class="step-connector" id="connector2"></span>
+            <div class="progress-step" id="step3"></div>
+        </div>
+
+        <!-- Messages -->
+        <div id="errorMsg" class="message error-message" aria-live="assertive"></div>
+        <div id="successMsg" class="message success-message" aria-live="polite"></div>
+
+        <!-- Step 1: Phone Number -->
+        <div id="phoneStep" class="form-section active">
+            <form id="phoneForm" novalidate>
+                <div class="form-group">
+                    <label class="form-label" for="phoneInput">
+                        <i class="fas fa-mobile-alt"></i>
+                        Phone Number
+                    </label>
+                    <div class="input-wrapper">
+                        <div class="phone-flag">🌍 Global</div>
+                        <input 
+                            type="tel" 
+                            id="phoneInput" 
+                            class="form-input" 
+                            placeholder="91XXXXXXXXXX"
+                            maxlength="15"
+                            required
+                            autocomplete="tel"
+                            aria-describedby="phoneHelp"
+                        >
+                    </div>
+                    <small id="phoneHelp" style="font-size: 0.85rem; color: #718096; margin-top: 8px; display: block;">
+                        Enter number with country code (+91, +1, +44, etc.)
+                    </small>
+                </div>
+                <button type="submit" class="primary-btn" id="sendOtpBtn">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Send Verification Code</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Step 2: OTP -->
+        <div id="otpStep" class="form-section">
+            <div class="phone-preview" id="phonePreview" aria-live="polite">
+                <span>Waiting for phone number...</span>
+            </div>
+            <form id="otpForm" novalidate>
+                <div class="form-group">
+                    <label class="form-label" for="otpInput">
+                        <i class="fas fa-lock"></i>
+                        Verification Code
+                    </label>
+                    <input 
+                        type="text" 
+                        id="otpInput" 
+                        class="form-input otp-input" 
+                        placeholder="Enter 6-digit code"
+                        maxlength="6"
+                        required
+                        autocomplete="one-time-code"
+                        inputmode="numeric"
+                        pattern="[0-9]{6}"
+                    >
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="back-btn" id="changePhoneBtn">
+                        <i class="fas fa-arrow-left"></i> Change Number
+                    </button>
+                    <button type="submit" class="primary-btn" id="verifyOtpBtn">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Verify Code</span>
+                    </button>
+                </div>
+            </form>
+            <div id="resendTimer" class="timer" style="display: none;">
+                Resend code in <span id="timer">60</span>s
+            </div>
+        </div>
+
+        <!-- Step 3: Profile -->
+        <div id="profileStep" class="form-section">
+            <div id="successMsg2" class="message success-message" aria-live="polite">
+                <i class="fas fa-check-circle"></i>
+                <span>Phone verified successfully!</span>
+            </div>
+            <form id="profileForm" novalidate>
+                <div class="form-group">
+                    <label class="form-label" for="profileName">
+                        <i class="fas fa-user"></i>
+                        Full Name
+                    </label>
+                    <input 
+                        type="text" 
+                        id="profileName" 
+                        class="form-input" 
+                        placeholder="Enter your full name"
+                        required
+                        autocomplete="name"
+                    >
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="profileEmail">
+                        <i class="fas fa-envelope"></i>
+                        Email Address
+                    </label>
+                    <input 
+                        type="email" 
+                        id="profileEmail" 
+                        class="form-input" 
+                        placeholder="your.email@example.com"
+                        required
+                        autocomplete="email"
+                    >
+                </div>
+                <input type="hidden" id="profilePhone">
+                <button type="submit" class="primary-btn" id="completeBtn">
+                    <i class="fas fa-rocket"></i>
+                    <span>Complete Login</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- reCAPTCHA -->
+        <div id="recaptcha-container" class="recaptcha-container" aria-hidden="true"></div>
+    </div>
+
+    <!-- Production JavaScript -->
+    <script type="module">
+        // Configuration from backend endpoint (secure)
+        let firebaseConfig = null;
+        let isInitialized = false;
+
+        // State management
+        const state = {
+            confirmationResult: null,
+            recaptchaVerifier: null,
+            resendTimer: null,
+            countdown: 60,
+            attempts: 0,
+            maxAttempts: 3
+        };
+
+        // Error types
+        const ERROR_TYPES = {
+            NETWORK: 'NETWORK_ERROR',
+            AUTH: 'AUTH_ERROR',
+            VALIDATION: 'VALIDATION_ERROR',
+            RATE_LIMIT: 'RATE_LIMIT_ERROR',
+            SERVER: 'SERVER_ERROR'
+        };
+
+        // Initialize app
+        async function initApp() {
+            try {
+                // Load Firebase config from server
+                const configResponse = await fetch('/api/config/firebase', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!configResponse.ok) {
+                    throw new Error('Failed to load configuration');
+                }
+
+                firebaseConfig = await configResponse.json();
+                
+                // Initialize Firebase
+                firebase.initializeApp(firebaseConfig);
+                isInitialized = true;
+                
+                // Check auth state
+                
+
+                // Initialize reCAPTCHA
+                initRecaptcha();
+
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showMessage('errorMsg', 'Failed to initialize application. Please refresh the page.', 'error');
+            }
+        }
+
+        // UI Functions
+        function showMessage(id, message, type = 'error') {
+            hideMessage();
+            const el = document.getElementById(id);
+            el.textContent = message;
+            el.className = `message ${type}-message`;
+            el.style.display = 'block';
+            
+            // Auto-hide success messages
+            if (type === 'success') {
+                setTimeout(() => hideMessage(), 5000);
+            }
+        }
+
+        function hideMessage() {
+            document.querySelectorAll('.message').forEach(el => {
+                el.style.display = 'none';
+            });
+        }
+
+        function updateProgress(step) {
+            for(let i = 1; i <= 3; i++) {
+                const stepEl = document.getElementById(`step${i}`);
+                const connector = document.getElementById(`connector${i}`);
+                
+                if (i < step) {
+                    stepEl.classList.add('completed');
+                } else if (i === step) {
+                    stepEl.classList.remove('completed');
+                    stepEl.classList.add('active');
+                } else {
+                    stepEl.classList.remove('active', 'completed');
+                }
+                
+                if (i < step) {
+                    document.getElementById(`connector${i}`).classList.add('completed');
+                }
+            }
+        }
+
+        function showStep(stepNum) {
+            document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(['phoneStep', 'otpStep', 'profileStep'][stepNum-1]).classList.add('active');
+            updateProgress(stepNum);
+            // Focus first input in the new step
+            setTimeout(() => {
+                const input = document.querySelector(`#${['phoneInput', 'otpInput', 'profileName'][stepNum-1]}`);
+                if (input) input.focus();
+            }, 100);
+        }
+
+        function startResendTimer() {
+            state.countdown = 60;
+            const timerEl = document.getElementById('resendTimer');
+            const timerText = document.getElementById('timer');
+            timerEl.style.display = 'block';
+            
+            if (state.resendTimer) clearInterval(state.resendTimer);
+            
+            state.resendTimer = setInterval(() => {
+                state.countdown--;
+                timerText.textContent = state.countdown;
+                
+                if (state.countdown <= 0) {
+                    clearInterval(state.resendTimer);
+                    timerEl.innerHTML = '<button type="button" id="resendBtn" style="background: none; border: none; color: var(--primary); cursor: pointer; font-weight: 600;">Resend Code</button>';
+                    
+                    document.getElementById('resendBtn').addEventListener('click', resendCode);
+                }
+            }, 1000);
+        }
+
+        function initRecaptcha() {
+            if (state.recaptchaVerifier) {
+                state.recaptchaVerifier.clear();
+            }
+            state.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+                size: 'invisible',
+                callback: () => console.log('reCAPTCHA verified'),
+                'expired-callback': () => showMessage('errorMsg', 'reCAPTCHA expired. Please try again.', 'error')
+            });
+        }
+
+        async function resendCode() {
+            const phone = document.getElementById('phoneInput').value.trim();
+            if (!phone) return;
+
+            try {
+                initRecaptcha();
+                const formattedPhone = `+${phone}`;
+                state.confirmationResult = await firebase.auth().signInWithPhoneNumber(formattedPhone, state.recaptchaVerifier);
+                showMessage('successMsg', 'Verification code resent successfully!', 'success');
+                startResendTimer();
+            } catch (error) {
+                handleFirebaseError(error);
+            }
+        }
+
+        function handleFirebaseError(error) {
+            console.error('Firebase error:', error);
+            
+            switch (error.code) {
+                case 'auth/invalid-phone-number':
+                    showMessage('errorMsg', 'Invalid phone number format', 'error');
+                    break;
+                case 'auth/too-many-requests':
+                    showMessage('errorMsg', 'Too many attempts. Please try again later.', 'error');
+                    break;
+                case 'auth/quota-exceeded':
+                    showMessage('errorMsg', 'Service temporarily unavailable. Please try again later.', 'error');
+                    break;
+                case 'auth/captcha-check-failed':
+                    showMessage('errorMsg', 'Security check failed. Please refresh and try again.', 'error');
+                    break;
+                default:
+                    showMessage('errorMsg', 'Authentication failed. Please try again.', 'error');
+            }
+        }
+
+        // Input validation
+        function validatePhone(phone) {
+            const phoneRegex = /^\d{10,15}$/;
+            return phoneRegex.test(phone);
+        }
+
+        function validateOTP(otp) {
+            return /^\d{6}$/.test(otp);
+        }
+
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function validateName(name) {
+            return name.trim().length >= 2 && name.trim().length <= 100;
+        }
+
+        // Phone Input Formatting
+        document.getElementById('phoneInput').addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '').slice(0, 15);
+            e.target.value = value;
+        });
+
+        // OTP Input Formatting
+        document.getElementById('otpInput').addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '').slice(0, 6);
+            e.target.value = value;
+        });
+
+        // Step 1: Send OTP
+        document.getElementById('phoneForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const phone = document.getElementById('phoneInput').value.trim();
+            const btn = document.getElementById('sendOtpBtn');
+            
+            if (!validatePhone(phone)) {
+                return showMessage('errorMsg', 'Please enter a valid phone number (10-15 digits)', 'error');
+            }
+
+            btn.disabled = true;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span> Sending...</span>';
+            hideMessage();
+
+            try {
+                if (!isInitialized) {
+                    throw new Error('Application not initialized');
+                }
+
+                state.attempts++;
+                if (state.attempts > state.maxAttempts) {
+                    throw new Error('Too many attempts. Please try again later.');
+                }
+
+                initRecaptcha();
+                const formattedPhone = `+${phone}`;
+                
+                state.confirmationResult = await firebase.auth().signInWithPhoneNumber(formattedPhone, state.recaptchaVerifier);
+                
+                // Update UI
+                document.getElementById('phonePreview').innerHTML = `
+                    <span>${formattedPhone}</span>
+                `;
+                
+                showStep(2);
+                showMessage('successMsg', `Verification code sent to ${formattedPhone}`, 'success');
+                startResendTimer();
+                state.attempts = 0; // Reset attempts on success
+                
+            } catch (error) {
+                handleFirebaseError(error);
+                if (error.code === 'auth/too-many-requests') {
+                    btn.disabled = true;
+                    setTimeout(() => { btn.disabled = false; }, 60000); // Disable for 1 minute
+                }
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        });
+
+        // Step 2: Verify OTP
+        document.getElementById('otpForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const otp = document.getElementById('otpInput').value.replace(/\D/g, '');
+            const btn = document.getElementById('verifyOtpBtn');
+            
+            if (!validateOTP(otp)) {
+                return showMessage('errorMsg', 'Please enter a valid 6-digit code', 'error');
+            }
+
+            btn.disabled = true;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span> Verifying...</span>';
+            hideMessage();
+
+            try {
+                const result = await state.confirmationResult.confirm(otp);
+                
+                // Store verified phone
+                document.getElementById('profilePhone').value = result.user.phoneNumber;
+                
+                // Auto-fill email if available from Firebase
+                if (result.user.email) {
+                    document.getElementById('profileEmail').value = result.user.email;
+                }
+                
+                showStep(3);
+                
+            } catch (error) {
+                console.error('Verification Error:', error);
+                
+                if (error.code === 'auth/invalid-verification-code') {
+                    showMessage('errorMsg', 'Invalid verification code. Please try again.', 'error');
+                } else if (error.code === 'auth/code-expired') {
+                    showMessage('errorMsg', 'Verification code expired. Please request a new one.', 'error');
+                } else {
+                    showMessage('errorMsg', 'Verification failed. Please try again.', 'error');
+                }
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        });
+
+        // Step 3: Complete Profile
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('profileName').value.trim();
+            const email = document.getElementById('profileEmail').value.trim();
+            const phone = document.getElementById('profilePhone').value;
+            const btn = document.getElementById('completeBtn');
+            
+            // Validation
+            if (!validateName(name)) {
+                return showMessage('errorMsg', 'Please enter a valid name (2-100 characters)', 'error');
+            }
+            
+            if (!validateEmail(email)) {
+                return showMessage('errorMsg', 'Please enter a valid email address', 'error');
+            }
+
+            btn.disabled = true;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span> Completing...</span>';
+            hideMessage();
+
+            try {
+                // Get Firebase ID Token
+                const idToken = await firebase.auth().currentUser.getIdToken();
+                
+                // Send to backend
+                const response = await fetch('/api/auth/complete-profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        phone_number: phone,
+                        id_token: idToken
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.message || 'Registration failed');
+                }
+                
+                if (result.success) {
+                    // Store tokens securely
+                    if (result.access_token) {
+                        localStorage.setItem('access_token', result.access_token);
+                        localStorage.setItem('refresh_token', result.refresh_token);
+                    }
+                    
+                    // Store user info
+                    localStorage.setItem('user', JSON.stringify(result.user));
+                    
+                    // Show success message
+                    showMessage('successMsg', 'Registration successful! Redirecting...', 'success');
+                    
+                    // Redirect to dashboard
+                    setTimeout(() => {
+                        window.location.href = '/home';
+                    }, 1500);
+                    
+                } else {
+                    throw new Error(result.message || 'Registration failed');
+                }
+                
+            } catch (error) {
+                console.error('Profile Error:', error);
+                showMessage('errorMsg', error.message || 'Registration failed. Please try again.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        });
+
+        // Navigation
+        document.getElementById('changePhoneBtn').addEventListener('click', () => {
+            if (state.resendTimer) clearInterval(state.resendTimer);
+            document.getElementById('otpInput').value = '';
+            document.getElementById('resendTimer').style.display = 'none';
+            showStep(1);
+            hideMessage();
+        });
+
+        // Initialize app when DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
+
+        // Service worker for PWA capabilities (optional)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+
+        // Offline detection
+        window.addEventListener('online', () => {
+            showMessage('successMsg', 'Back online!', 'success');
+        });
+
+        window.addEventListener('offline', () => {
+            showMessage('errorMsg', 'You are offline. Some features may not work.', 'error');
+        });
+    </script>
+</body>
+</html>

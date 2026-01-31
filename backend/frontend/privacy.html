@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CureVox - Privacy Policy & Compliance</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-g: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+            --glass-bg: rgba(255,255,255,0.1); --glass-border: rgba(255,255,255,0.2);
+            --success: #10b981; --warning: #f59e0b; --info: #3b82f6; --dark: #1e293b;
+            --shadow-lg: 0 25px 50px -12px rgba(0,0,0,0.25);
+            --shadow-xl: 0 35px 60px -12px rgba(0,0,0,0.3);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: var(--primary-g); 
+            line-height: 1.7; 
+            color: #333;
+        }
+        .glass { 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(25px); 
+            border: 1px solid var(--glass-border); 
+            box-shadow: var(--shadow-lg); 
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+        
+        /* Navbar */
+        .navbar { 
+            position: fixed; top: 0; width: 100%; padding: 15px 5%; z-index: 1000; 
+            backdrop-filter: blur(20px); 
+        }
+        .nav-container { 
+            max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; 
+        }
+        .logo { font-size: 1.6rem; font-weight: 800; background: linear-gradient(45deg, #fff, rgba(255,255,255,0.8)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* Hero */
+        .hero { 
+            padding: 140px 5% 80px; text-align: center; color: white; 
+        }
+        .hero h1 { 
+            font-size: 3rem; font-weight: 800; margin-bottom: 20px; 
+            background: linear-gradient(45deg, #fff, rgba(255,255,255,0.8)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero-badge { 
+            display: inline-block; background: rgba(16,185,129,0.2); color: var(--success); 
+            padding: 12px 24px; border-radius: 50px; font-weight: 600; font-size: 1.1rem; 
+            border: 2px solid var(--success); margin-bottom: 30px;
+        }
+        
+        /* Content Sections */
+        .content-section { 
+            margin-bottom: 80px; padding: 60px 40px; border-radius: 24px; 
+        }
+        .content-section h2 { 
+            font-size: 2.2rem; font-weight: 700; margin-bottom: 30px; color: white; 
+            display: flex; align-items: center; gap: 15px;
+        }
+        .content-section h3 { 
+            font-size: 1.5rem; font-weight: 600; margin: 35px 0 20px; color: white; 
+        }
+        .content-section p, .content-section li { 
+            color: rgba(255,255,255,0.95); font-size: 1.1rem; margin-bottom: 18px; 
+        }
+        .content-section ul { padding-left: 30px; }
+        .content-section li { margin-bottom: 12px; }
+        
+        /* Feature Grid */
+        .features-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 30px; margin-top: 40px; 
+        }
+        .feature-item { 
+            padding: 30px; background: rgba(255,255,255,0.08); border-radius: 20px; 
+            border-left: 5px solid var(--success);
+        }
+        .feature-item h4 { color: white; margin-bottom: 15px; font-weight: 600; }
+        
+        /* Compliance Badges */
+        .compliance-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 25px; margin: 40px 0; 
+        }
+        .compliance-badge { 
+            text-align: center; padding: 30px 20px; border-radius: 20px; 
+            transition: all 0.3s; cursor: pointer;
+        }
+        .compliance-badge:hover { transform: translateY(-8px); }
+        .compliance-shield { font-size: 3rem; margin-bottom: 15px; }
+        .compliance-gdpr { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .compliance-hipaa { background: linear-gradient(135deg, #48bb78, #38a169); color: white; }
+        .compliance-secure { background: linear-gradient(135deg, #ed8936, #dd6b20); color: white; }
+        
+        /* CTA Section */
+        .cta-section { 
+            text-align: center; padding: 80px 40px; margin: 100px 0; 
+        }
+        .cta-buttons { display: flex; gap: 25px; justify-content: center; flex-wrap: wrap; margin-top: 40px; }
+        .btn { 
+            padding: 18px 36px; border: none; border-radius: 50px; font-weight: 600; font-size: 1.1rem; 
+            cursor: pointer; transition: all 0.4s; display: inline-flex; align-items: center; gap: 12px;
+            text-decoration: none;
+        }
+        .btn-primary { background: rgba(255,255,255,0.2); color: white; backdrop-filter: blur(20px); border: 2px solid rgba(255,255,255,0.3); }
+        .btn-primary:hover { background: white; color: #3b82f6; transform: translateY(-5px); }
+        .btn-success { background: var(--success); color: white; border: 2px solid var(--success); }
+        .btn-success:hover { background: #059669; transform: translateY(-5px); }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 0 5%; }
+            .content-section { padding: 40px 20px; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+            .btn { width: 100%; max-width: 300px; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar glass">
+        <div class="nav-container">
+            <div class="logo">CureVox <i class="fas fa-shield-alt"></i> Privacy</div>
+            <div>
+                <a href="landing.html" style="color: white; text-decoration: none; margin-right: 20px; font-weight: 500;">Home</a>
+                <a href="dashboard.html" style="color: white; text-decoration: none; margin-right: 20px; font-weight: 500;">Dashboard</a>
+                <a href="reports.html" style="color: white; text-decoration: none; margin-right: 20px; font-weight: 500;">Reports</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero glass" style="padding: 80px 40px; margin-top: 80px;">
+        <div class="container">
+            <h1>Privacy Policy & Data Security</h1>
+            <div class="hero-badge">
+                <i class="fas fa-shield-check"></i> Healthcare-Grade Privacy Protection
+            </div>
+            <p style="font-size: 1.2rem; opacity: 0.95; max-width: 800px; margin: 0 auto;">
+                CureVox prioritizes your privacy with enterprise-grade security. 
+                We process health data responsibly and transparently.
+            </p>
+        </div>
+    </section>
+
+    <!-- Data Collection -->
+    <section class="content-section glass container">
+        <h2><i class="fas fa-database"></i> What Data We Collect</h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <h4><i class="fas fa-microphone"></i> Audio Recordings</h4>
+                <p>Temporary processing of breath, cough, and voice inputs. Automatically deleted after analysis (max 24h retention).</p>
+            </div>
+            <div class="feature-item">
+                <h4><i class="fas fa-image"></i> Medical Images</h4>
+                <p>Skin analysis images processed securely. Pixel-level anonymization applied before storage.</p>
+            </div>
+            <div class="feature-item">
+                <h4><i class="fas fa-user-shield"></i> User Metadata</h4>
+                <p>Minimal account data (email, preferences). No demographic or location tracking without explicit consent.</p>
+            </div>
+            <div class="feature-item">
+                <h4><i class="fas fa-chart-line"></i> Analysis Results</h4>
+                <p>Non-diagnostic insights stored for your reports. Encrypted at rest, accessible only by you.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compliance Standards -->
+    <section class="content-section glass container">
+        <h2><i class="fas fa-certificate"></i> Compliance & Security Standards</h2>
+        <div class="compliance-grid">
+            <div class="compliance-badge compliance-gdpr">
+                <div class="compliance-shield">🇪🇺</div>
+                <h4>GDPR Compliant</h4>
+                <p>Full EU data protection regulation compliance</p>
+            </div>
+            <div class="compliance-badge compliance-hipaa">
+                <div class="compliance-shield">📋</div>
+                <h4>HIPAA Ready</h4>
+                <p>US healthcare privacy standards alignment</p>
+            </div>
+            <div class="compliance-badge compliance-secure">
+                <div class="compliance-shield">🔒</div>
+                <h4>End-to-End Encryption</h4>
+                <p>All data encrypted in transit and at rest</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Processing -->
+    <section class="content-section glass container">
+        <h2><i class="fas fa-cogs"></i> How We Process Your Data</h2>
+        
+        <h3>🔒 Processing Transparency</h3>
+        <ul>
+            <li><strong>AI Analysis:</strong> Audio/images processed locally first, then securely transmitted to analysis servers</li>
+            <li><strong>No Human Access:</strong> Analysis results generated entirely by AI systems, no human review</li>
+            <li><strong>Temporary Storage:</strong> Raw files deleted within 24 hours post-analysis</li>
+            <li><strong>Anonymized Analytics:</strong> Usage statistics completely de-identified</li>
+        </ul>
+
+        <h3>🎯 AI Model Safety</h3>
+        <p>
+            CureVox AI models are trained on <strong>de-identified, aggregated medical datasets</strong> from 
+            public health research. No individual patient data used in training. Models operate in 
+            <strong>strictly assistive mode</strong> - never diagnostic.
+        </p>
+    </section>
+
+    <!-- User Rights -->
+    <section class="content-section glass container">
+        <h2><i class="fas fa-user-check"></i> Your Rights & Controls</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-top: 30px;">
+            <div style="padding: 30px; background: rgba(255,255,255,0.08); border-radius: 20px; border-left: 5px solid var(--info);">
+                <h4 style="color: white; margin-bottom: 15px;"><i class="fas fa-trash-alt"></i> Delete All Data</h4>
+                <p style="color: rgba(255,255,255,0.95);">Permanently delete all analysis history, reports, and account data instantly</p>
+            </div>
+            <div style="padding: 30px; background: rgba(255,255,255,0.08); border-radius: 20px; border-left: 5px solid var(--success);">
+                <h4 style="color: white; margin-bottom: 15px;"><i class="fas fa-download"></i> Data Export</h4>
+                <p style="color: rgba(255,255,255,0.95);">Download complete data export in machine-readable format</p>
+            </div>
+            <div style="padding: 30px; background: rgba(255,255,255,0.08); border-radius: 20px; border-left: 5px solid var(--warning);">
+                <h4 style="color: white; margin-bottom: 15px;"><i class="fas fa-eye-slash"></i> Privacy Mode</h4>
+                <p style="color: rgba(255,255,255,0.95);">Zero data retention - analyses processed locally only</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section glass container">
+        <h2 style="font-size: 2.5rem; margin-bottom: 20px; color: white;">
+            <i class="fas fa-shield-check"></i> Your Data, Your Control
+        </h2>
+        <p style="font-size: 1.2rem; color: rgba(255,255,255,0.95); margin-bottom: 40px; max-width: 700px; margin-left: auto; margin-right: auto;">
+            CureVox operates as a trusted healthcare assistant with unbreakable privacy commitments.
+        </p>
+        <div class="cta-buttons">
+            <a href="dashboard.html" class="btn btn-primary">
+                <i class="fas fa-tachometer-alt"></i> Start Analysis
+            </a>
+            <a href="reports.html" class="btn btn-success">
+                <i class="fas fa-file-medical-alt"></i> View Reports
+            </a>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Parallax effect on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero');
+            if (parallax) {
+                parallax.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Notification system
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 120px; right: 30px; padding: 20px 30px; border-radius: 12px;
+                font-weight: 600; z-index: 10000; transform: translateX(400px); transition: all 0.4s;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            `;
+            
+            const colors = {
+                success: 'rgba(16,185,129,0.95)',
+                info: 'rgba(59,130,246,0.95)',
+                warning: 'rgba(245,158,11,0.95)'
+            };
+            
+            notification.style.background = colors[type];
+            notification.style.color = 'white';
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => document.body.removeChild(notification), 400);
+            }, 5000);
+        }
+
+        // Page load animation
+        window.addEventListener('load', () => {
+            showNotification('✅ Privacy Policy loaded securely', 'info');
+        });
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'all 0.8s ease';
+            observer.observe(section);
+        });
+    </style>
+</head>
+</body>

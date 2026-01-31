@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="style.css">
+
+<body>
+<h2>Cough Test</h2>
+<form action="http://localhost:5001/predict/cough" method="POST" enctype="multipart/form-data">
+  <input type="file" name="file">
+  <button type="submit">Upload</button>
+</form>
+
+<hr>
+
+<h2>Breath Test</h2>
+<form action="http://localhost:5001/predict/breath" method="POST" enctype="multipart/form-data">
+  <input type="file" name="file">
+  <button type="submit">Upload Breath File</button>
+</form>
+<script src="main.js" defer></script>
+</body>
+</html>

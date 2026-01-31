@@ -1,0 +1,47 @@
+.PHONY: help install dev test deploy clean
+
+help:
+	@echo "Available commands:"
+	@echo "  make install     Install dependencies"
+	@echo "  make dev         Run development server"
+	@echo "  make test        Run tests"
+	@echo "  make docker-up   Start Docker containers"
+	@echo "  make docker-down Stop Docker containers"
+	@echo "  make deploy      Deploy to production"
+	@echo "  make clean       Clean up temporary files"
+
+install:
+	cd backend && pip install -r requirements.txt
+
+dev:
+	cd backend && flask run --host=0.0.0.0 --port=5000 --debug
+
+test:
+	cd backend && python -m pytest tests/ -v
+
+docker-up:
+	docker-compose up -d
+
+docker-down:
+	docker-compose down
+
+docker-logs:
+	docker-compose logs -f
+
+docker-build:
+	docker-compose build --no-cache
+
+migrate:
+	cd backend && flask db upgrade
+
+backup:
+	./scripts/backup.sh
+
+deploy:
+	./scripts/deploy.sh
+
+clean:
+	find . -type f -name "*.pyc" -delete
+	find . -type d -name "__pycache__" -delete
+	rm -rf backend/logs/*.log
+	rm -rf backend/uploads/temp/*

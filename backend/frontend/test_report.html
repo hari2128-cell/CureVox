@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="style.css">
+<body>
+<h2>Generate Report</h2>
+
+<form action="http://localhost:5001/report/generate" method="POST">
+  User ID: <input type="text" name="user_id"><br><br>
+  Diagnosis: <input type="text" name="diagnosis"><br><br>
+  Severity: <input type="text" name="severity"><br><br>
+  <button type="submit">Generate</button>
+</form>
+<script src="main.js" defer></script>
+</body>
+</html>

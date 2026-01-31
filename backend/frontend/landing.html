@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CureVox Dashboard | AI Health Assistant</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* YOUR CSS EXACTLY UNCHANGED */
+        :root {
+            --primary: #2563eb; --primary-dark: #1d4ed8; --success: #10b981; --warning: #f59e0b;
+            --danger: #ef4444; --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-900: #111827;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05); --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--gray-50); }
+        
+        /* Header */
+        .header { background: white; box-shadow: var(--shadow-sm); position: sticky; top: 0; z-index: 100; }
+        .nav-container { 
+            max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; 
+            display: flex; justify-content: space-between; align-items: center; 
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .user-info { display: flex; align-items: center; gap: 1rem; }
+        .user-avatar { 
+            width: 40px; height: 40px; border-radius: 50%; background: var(--primary); 
+            color: white; display: flex; align-items: center; justify-content: center; font-weight: 600;
+        }
+        .logout-btn { 
+            background: var(--gray-100); color: #6b7280; border: none; padding: 0.5rem 1.5rem; 
+            border-radius: 0.75rem; cursor: pointer; font-weight: 500; transition: all 0.2s;
+        }
+        .logout-btn:hover { background: var(--danger); color: white; }
+
+        /* Main Container */
+        .main-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        
+        /* Step Indicators */
+        .step-indicator {
+            display: flex; justify-content: center; gap: 2rem; margin-bottom: 3rem; padding: 1rem;
+        }
+        .step { display: flex; align-items: center; gap: 0.75rem; color: #6b7280; font-weight: 500; }
+        .step.active { color: var(--primary); }
+        .step.completed { color: var(--success); }
+        .step i { font-size: 1.25rem; }
+        
+        /* Analysis Section */
+        .analysis-section { 
+            background: white; border-radius: 1.5rem; box-shadow: var(--shadow-md); 
+            padding: 3rem; text-align: center; display: none; 
+        }
+        .analysis-section.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .analysis-header h2 { font-size: 2.5rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1rem; }
+        .analysis-subtitle { color: #6b7280; font-size: 1.25rem; margin-bottom: 3rem; }
+        
+        /* File Upload */
+        .upload-zone {
+            border: 3px dashed var(--gray-100); border-radius: 1.5rem; padding: 4rem 2rem;
+            margin: 2rem 0; cursor: pointer; transition: all 0.3s; background: var(--gray-50);
+        }
+        .upload-zone:hover, .upload-zone.dragover { 
+            border-color: var(--primary); background: rgba(37, 99, 235, 0.05); transform: scale(1.02);
+        }
+        .upload-icon { font-size: 4rem; color: var(--primary); margin-bottom: 1.5rem; }
+        
+        .record-controls { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
+        .record-btn { 
+            padding: 1rem 2rem; border: none; border-radius: 3rem; font-weight: 600; cursor: pointer; 
+            display: flex; align-items: center; gap: 0.75rem; transition: all 0.3s;
+        }
+        .record-btn-primary { background: var(--primary); color: white; }
+        .record-btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .record-btn.recording { background: var(--danger); animation: pulse 1.5s infinite; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* AI Chat Section */
+        .chat-section { display: none; }
+        .chat-container { height: 500px; overflow-y: auto; padding: 1.5rem; background: var(--gray-50); border-radius: 1rem; margin-bottom: 1.5rem; }
+        .message { margin-bottom: 1.5rem; display: flex; gap: 1rem; }
+        .message.user { justify-content: flex-end; }
+        .message-content { max-width: 70%; padding: 1rem 1.25rem; border-radius: 1.25rem; }
+        .message.user .message-content { background: var(--primary); color: white; }
+        .message.ai .message-content { background: white; border: 1px solid var(--gray-100); }
+        
+        /* Reports Preview */
+        .reports-preview {
+            background: white; border-radius: 1.5rem; box-shadow: var(--shadow-md); padding: 2.5rem;
+            display: none; text-align: center;
+        }
+        .reports-preview.active { display: block; }
+        .risk-badge {
+            display: inline-block; padding: 1rem 2rem; border-radius: 3rem; font-weight: 700;
+            font-size: 1.1rem; margin-bottom: 2rem;
+        }
+        .risk-low { background: #dcfce7; color: var(--success); }
+        
+        .btn { 
+            background: var(--primary); color: white; border: none; padding: 1rem 2rem; 
+            border-radius: 1rem; font-weight: 600; cursor: pointer; margin: 0.5rem;
+            transition: all 0.3s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .btn-success { background: var(--success); }
+        
+        @media (max-width: 768px) {
+            .main-container { padding: 1rem; }
+            .analysis-section { padding: 2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- YOUR HTML EXACTLY UNCHANGED -->
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <i class="fas fa-stethoscope"></i> CureVox Dashboard
+            </div>
+            <div class="user-info">
+                <span id="userName">Loading...</span>
+                <div class="user-avatar" id="userAvatar">U</div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <!-- Step Indicators -->
+        <div class="step-indicator">
+            <div class="step active" id="step1">
+                <i class="fas fa-upload"></i> 1. Analysis
+            </div>
+            <div class="step" id="step2">
+                <i class="fas fa-comments"></i> 2. AI Chat
+            </div>
+            <div class="step" id="step3">
+                <i class="fas fa-file-medical-alt"></i> 3. Reports
+            </div>
+        </div>
+
+        <!-- Analysis Section -->
+        <section class="analysis-section active" id="analysisSection">
+            <h2>Health Analysis</h2>
+            <p class="analysis-subtitle">Upload audio for breath/cough analysis or image for rash analysis</p>
+            
+            <div class="upload-zone" id="uploadZone">
+                <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <p><strong>Click or drag files here</strong></p>
+                <p style="color: #6b7280; margin-top: 0.5rem;">
+                    Audio: WAV, MP3 (Breath/Cough) • Images: JPG, PNG (Rash)
+                </p>
+            </div>
+            <input type="file" id="fileInput" accept="audio/*,image/*" style="display: none;">
+            
+            <div class="record-controls">
+                <button class="record-btn record-btn-primary" id="recordBtn">
+                    <i class="fas fa-microphone"></i> Record Audio
+                </button>
+                <button class="record-btn record-btn-primary" onclick="startAnalysis()">
+                    <i class="fas fa-play"></i> Analyze File
+                </button>
+            </div>
+        </section>
+
+        <!-- AI Chat Section -->
+        <section class="chat-section" id="chatSection">
+            <div class="analysis-header">
+                <h2>AI Consultation</h2>
+                <p class="analysis-subtitle">Discuss your analysis results with multilingual AI assistant</p>
+            </div>
+            <div class="chat-container" id="chatContainer">
+                <div class="message ai">
+                    <div class="message-content">
+                        <strong>CureVox AI:</strong> Analysis complete! I see healthy patterns. 
+                        Do you have any symptoms or questions? Speak naturally in any language.
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem;">
+                <input type="text" id="chatInput" placeholder="Type your question..." 
+                       style="flex: 1; padding: 1rem; border: 2px solid var(--gray-100); border-radius: 2rem; max-width: 500px;">
+                <button class="btn" onclick="sendChatMessage()">Send</button>
+                <button class="record-btn record-btn-primary" id="chatVoiceBtn" style="padding: 1rem;">
+                    <i class="fas fa-microphone"></i>
+                </button>
+            </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn btn-success" onclick="completeChat()">✅ Finish Consultation</button>
+            </div>
+        </section>
+
+        <!-- Reports Preview -->
+        <section class="reports-preview" id="reportsSection">
+            <h2>Analysis Complete!</h2>
+            <div class="risk-badge risk-low">LOW RISK</div>
+            <p style="font-size: 1.25rem; color: #6b7280; margin: 2rem 0;">
+                Your comprehensive medical report is ready. View full history and download PDFs.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="/reports" class="btn btn-success">
+                    <i class="fas fa-file-medical-alt"></i> View Reports
+                </a>
+                <button class="btn" onclick="downloadReport()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn" onclick="newAnalysis()">
+                    <i class="fas fa-plus"></i> New Analysis
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- ✅ FIXED JAVASCRIPT - UI 100% UNCHANGED -->
+    <script>
+    var currentUser = null;
+    var currentStep = 0; 
+    var mediaRecorder = null;
+    var audioChunks = [];
+    var recognition = null;
+    var isRecording = false;
+    var isListening = false;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        currentUser = {name: 'Dr. Smith', role: 'doctor'};
+        document.getElementById('userName').textContent = currentUser.name;
+        document.getElementById('userAvatar').textContent = currentUser.name.charAt(0);
+    
+        var uploadZone = document.getElementById('uploadZone');
+        var fileInput = document.getElementById('fileInput');
+        uploadZone.onclick = function() { fileInput.click(); };
+        fileInput.onchange = handleFileSelect;
+    
+        ['dragenter','dragover','dragleave','drop'].forEach(function(evt) {
+            uploadZone.addEventListener(evt, preventDefaults, false);
+        });
+        uploadZone.addEventListener('drop', handleDrop, false);
+    
+        document.getElementById('recordBtn').onclick = toggleRecording;
+        document.getElementById('chatVoiceBtn').onclick = toggleChatVoice;
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function handleFileSelect() {
+        var file = document.getElementById('fileInput').files[0];
+        if (file) {
+            document.getElementById('uploadZone').innerHTML = 
+                '<i class="fas fa-file-medical" style="font-size: 4rem; color: var(--success);"></i>' +
+                '<p><strong>' + file.name + '</strong></p>' +
+                '<p style="color: #6b7280;">' + (file.size/1024/1024).toFixed(1) + ' MB</p>';
+        }
+    }
+
+    function handleDrop(e) {
+        preventDefaults(e);
+        var files = e.dataTransfer.files;
+        if (files.length > 0) {
+            document.getElementById('fileInput').files = files;
+            handleFileSelect();
+        }
+    }
+
+    function toggleRecording() {
+        var btn = document.getElementById('recordBtn');
+        if (!isRecording) {
+            navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                mediaRecorder.ondataavailable = function(e) { audioChunks.push(e.data); };
+                mediaRecorder.onstop = function() {
+                    var audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    var dt = new DataTransfer();
+                    var file = new File([audioBlob], 'recording.wav', { type: 'audio/wav' });
+                    dt.items.add(file);
+                    document.getElementById('fileInput').files = dt.files;
+                    handleFileSelect();
+                };
+                mediaRecorder.start();
+                isRecording = true;
+                btn.classList.add('recording');
+                btn.innerHTML = '<i class="fas fa-stop"></i> Stop';
+            }).catch(function() {
+                alert('Microphone access denied');
+            });
+        } else {
+            mediaRecorder.stop();
+            mediaRecorder.stream.getTracks().forEach(function(track) { track.stop(); });
+            mediaRecorder = null;
+            isRecording = false;
+            btn.classList.remove('recording');
+            btn.innerHTML = '<i class="fas fa-microphone"></i> Record Audio';
+        }
+    }
+
+    function toggleChatVoice() {
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            if (!recognition) {
+                recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.onresult = function(e) {
+                    document.getElementById('chatInput').value = e.results[0][0].transcript;
+                };
+            }
+            if (isListening) {
+                recognition.stop();
+                isListening = false;
+                document.getElementById('chatVoiceBtn').innerHTML = '<i class="fas fa-microphone"></i>';
+            } else {
+                recognition.start();
+                isListening = true;
+                document.getElementById('chatVoiceBtn').innerHTML = '<i class="fas fa-stop"></i>';
+            }
+        } else {
+            alert('Voice recognition not supported');
+        }
+    }
+
+    function startAnalysis() {
+        var file = document.getElementById('fileInput').files[0];
+        if (!file) return alert('Please upload or record first');
+    
+        var btn = document.getElementById('recordBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+    
+        setTimeout(function() {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-microphone"></i> Record Audio';
+            nextStep();
+        }, 2000);
+    }
+
+    function nextStep() {
+        currentStep++;   // 🔥 MOVE THIS TO THE TOP
+
+        var steps = document.querySelectorAll('.step');
+        for (var i = 0; i < steps.length; i++) {
+            steps[i].classList.remove('active', 'completed');
+            if (i < currentStep) steps[i].classList.add('completed');
+            if (i === currentStep) steps[i].classList.add('active');
+        }
+
+        document.getElementById('analysisSection').classList.remove('active');
+        document.getElementById('chatSection').classList.remove('active');
+        document.getElementById('reportsSection').classList.remove('active');
+
+        if (currentStep === 1) {
+            document.getElementById('chatSection').classList.add('active');
+        } 
+        else if (currentStep === 2) {
+            document.getElementById('reportsSection').classList.add('active');
+        } 
+        else {
+            document.getElementById('analysisSection').classList.add('active');
+            currentStep = 0; // safety reset
+        }
+    }
+
+    function sendChatMessage() {
+        var input = document.getElementById('chatInput');
+        var message = input.value.trim();
+        if (!message) return;
+    
+        addChatMessage(message, 'user');
+        input.value = '';
+    
+        setTimeout(function() {
+            addChatMessage('Thank you! Your symptoms align with the analysis. Continue monitoring.', 'ai');
+        }, 800);
+    }
+
+    function addChatMessage(text, sender) {
+        var container = document.getElementById('chatContainer');
+        var message = document.createElement('div');
+        message.className = 'message ' + sender;
+        message.innerHTML = '<div class="message-content"><strong>' + 
+            (sender === 'user' ? 'You' : 'CureVox AI') + ':</strong> ' + text + '</div>';
+        container.appendChild(message);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function completeChat() {
+        nextStep();
+    }
+
+    function downloadReport() {
+        var report = 'CureVox Medical Report\n' + new Date().toLocaleString() + '\nRisk: LOW\nPatient: ' + 
+            currentUser.name + '\n\nHealthy patterns detected.';
+        var blob = new Blob([report], { type: 'text/plain' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'CureVox-Report-' + Date.now() + '.txt';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    function newAnalysis() {
+        currentStep = 0;
+        var steps = document.querySelectorAll('.step');
+        for (var i = 0; i < steps.length; i++) {
+            steps[i].classList.remove('active', 'completed');
+        }
+        steps[0].classList.add('active');
+    
+        var sections = document.querySelectorAll('.analysis-section, .chat-section, .reports-preview');
+        for (var i = 0; i < sections.length; i++) {
+            sections[i].classList.remove('active');
+        }
+        document.getElementById('analysisSection').classList.add('active');
+    
+        document.getElementById('chatContainer').innerHTML = 
+            '<div class="message ai"><div class="message-content">' +
+            '<strong>CureVox AI:</strong> Analysis complete! I see healthy patterns. Do you have any symptoms?</div></div>';
+        document.getElementById('fileInput').value = '';
+        document.getElementById('uploadZone').innerHTML = 
+            '<div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>' +
+            '<p><strong>Click or drag files here</strong></p>' +
+            '<p style="color: #6b7280; margin-top: 0.5rem;">Audio: WAV, MP3 • Images: JPG, PNG</p>';
+    }
+
+    function logout() {
+        alert('Logged out! Demo mode active.');
+    }
+    </script>
+</body>
+</html>
