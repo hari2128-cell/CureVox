@@ -128,12 +128,19 @@ Quick Execution :
 
 
 Navigate to backend directory
+
 cd curevox-main/backend
+
 python -m venv venv
+
 venv\Scripts\activate          # Windows
-# source venv/bin/activate     # Linux / macOS
+
+source venv/bin/activate     # Linux / macOS
+
 pip install -r requirements.txt
+
 cp .env.example .env           # Create .env File (Local Only), Copy the example file : cp .env.example .env , Update .env with your own local credentials
+
 python app.py
 
 
