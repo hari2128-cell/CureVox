@@ -115,7 +115,7 @@ CureVox/
 
 
 ⚙️ Setup & Installation
-Prerequisites
+Prerequisites :
 
 Python 3.x installed
 
@@ -124,62 +124,16 @@ pip package manager
 Internet connection for dependency installation
 
 
+Quick Execution : 
+
+
 Navigate to backend directory
-
 cd curevox-main/backend
-
-Step 1: Create Virtual Environment (Recommended)
-
 python -m venv venv
-
-
-Activate the environment:
-
-Windows
-
-venv\Scripts\activate
-
-
-Linux / macOS
-
-source venv/bin/activate
-
-Step 2: Install Dependencies
-
+venv\Scripts\activate          # Windows
+# source venv/bin/activate     # Linux / macOS
 pip install -r requirements.txt
-
-🔑 Environment Configuration
-Create .env File (Local Only)
-
-The project uses environment variables for configuration.
-
-Copy the example file:
-
-cp .env.example .env
-
-
-Update .env with your own local credentials
-
-⚠️ Important
-
-The .env file is not included in this repository
-
-Never commit or share real credentials
-
-.env.example
-
-A safe template is provided:
-
-.env.example
-
-
-This file contains placeholder values only and is safe to share.
-
-▶️ Running the Application
-
-
-Run the backend using:
-
+cp .env.example .env           # Create .env File (Local Only), Copy the example file : cp .env.example .env , Update .env with your own local credentials
 python app.py
 
 
@@ -201,6 +155,21 @@ Ethical conclusion
 Recommendations
 
 
+💼 Business Model – CureVox
+
+CureVox follows an affordable, pay-per-use healthcare guidance model, ensuring accessibility while maintaining long-term sustainability. Each session provides complete value, covering guided conversational interaction, analysis, and downloadable health report generation.
+
+🔹 Service Pricing (All-Inclusive)
+
+General Health Guidance (Cough & Breathing)
+₹30 – ₹50 per session
+(Includes chatbot interaction, analysis, and health summary report)
+
+Rash Guidance (Skin Image Analysis)
+₹25 – ₹40 per session
+(Includes chatbot interaction, analysis, and health summary report)
+
+This transparent pricing avoids subscriptions and hidden charges, encouraging users to seek early guidance without financial hesitation.
 
 
 📌 Disclaimer
@@ -209,10 +178,12 @@ CureVox is an AI-based health guidance system intended for informational and awa
 
 
 
-👤 Author
+👥 Team CureVox
 
-
-Hari S, Dharaneesh M, Sarvesh K, Ajay V
+Hari S
+Dharaneesh M
+Sarvesh K
+Ajay V
 
 
 Department of Electronics Engineering
